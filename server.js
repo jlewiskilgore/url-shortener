@@ -1,36 +1,52 @@
 var express = require('express')
 var app = express();
 
-app.get('/', function(req, res) {
-	var isValidURL = validateURL('http://www.google.com');
-	console.log(isValidURL);
+var MongoClient = require('mongodb').MongoClient;
+var dbURL = process.env.MONGOLAB_URL;
 
-	if(isValidURL) {
-		var result = {
-			"originalURL": null,
-			"shortenedURL": null
-		};
+app.set('port', (process.env.PORT || 8080));
+
+MongoClient.connect((process.env.MONGOLAB_URL || 'mongodb://localhost:27017/urldb'), function(err, db) {
+	if(!err) {
+		console.log("We are connected");
+		db.close();
 	}
-	else {
-		var result = {
-			"error": "URL is not in valid format https://www.example.com"
-		};
+	else if(err) {
+		console.log(err);
 	}
 
-	res.json(result);
-});
+	app.get('/', function(req, res) {
+		var isValidURL = validateURL('http://www.google.com');
+		console.log(isValidURL);
 
-function validateURL(url) {
-	var urlArr = url.split(".");
+		if(isValidURL) {
+			var result = {
+				"originalURL": null,
+				"shortenedURL": null
+			};
+		}
+		else {
+			var result = {
+				"error": "URL is not in valid format https://www.example.com"
+			};
+		}
 
-	if(urlArr[0] == "http://www" && urlArr[2] == "com") {
-		return true;
+		res.json(result);
+	});
+
+	function validateURL(url) {
+		var urlArr = url.split(".");
+
+		if(urlArr[0] == "http://www" && urlArr[2] == "com") {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
-	else {
-		return false;
-	}
-}
 
-app.listen(process.env.PORT || 8080, function() {
-	console.log("Server Listening on Port 8080");
+	app.listen(process.env.PORT || 8080, function() {
+		console.log("Server Listening on Port 8080");
+	});
+
 });
