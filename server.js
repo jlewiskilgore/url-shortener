@@ -19,11 +19,12 @@ MongoClient.connect((process.env.MONGOLAB_URL || 'mongodb://localhost:27017/urld
 	app.get('/shorten/:url(*)', function(req, res) {
 		var reqUrl = req.params.url;
 		var isValidURL = validateURL(reqUrl);
+		var shortUrl = Math.random().toString(36).slice(-5);
 
 		if(isValidURL) {
 			var result = {
 				"originalURL": reqUrl,
-				"shortURL": null
+				"shortURL": shortUrl
 			};
 
 			urls.insert(result, function(err, res) {
@@ -58,6 +59,10 @@ MongoClient.connect((process.env.MONGOLAB_URL || 'mongodb://localhost:27017/urld
 		else {
 			return false;
 		}
+	}
+
+	function generateShortUrl() {
+		return Math.random().toString(36).slice(-5);
 	}
 
 	app.listen(process.env.PORT || 8080, function() {
