@@ -15,8 +15,9 @@ MongoClient.connect((process.env.MONGOLAB_URL || 'mongodb://localhost:27017/urld
 		console.log(err);
 	}
 
-	app.get('/', function(req, res) {
-		var isValidURL = validateURL('http://www.google.com');
+	app.get('/:url(*)', function(req, res) {
+		var reqUrl = req.params.url;
+		var isValidURL = validateURL(reqUrl);
 		console.log(isValidURL);
 
 		if(isValidURL) {
