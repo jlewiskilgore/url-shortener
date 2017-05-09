@@ -9,22 +9,30 @@ app.set('port', (process.env.PORT || 8080));
 MongoClient.connect((process.env.MONGOLAB_URL || 'mongodb://localhost:27017/urldb'), function(err, db) {
 	if(!err) {
 		console.log("We are connected");
-		db.close();
 	}
 	else if(err) {
 		console.log(err);
 	}
 
-	app.get('/:url(*)', function(req, res) {
+	var urls = db.collection('urls');
+
+	app.get('/shorten/:url(*)', function(req, res) {
 		var reqUrl = req.params.url;
 		var isValidURL = validateURL(reqUrl);
-		console.log(isValidURL);
 
 		if(isValidURL) {
 			var result = {
-				"originalURL": null,
-				"shortenedURL": null
+				"originalURL": reqUrl,
+				"shortURL": null
 			};
+
+			urls.insert(result, function(err, res) {
+				if(err) {
+					throw err;
+				}
+
+				console.log("Url inserted!");
+			});
 		}
 		else {
 			var result = {
@@ -33,6 +41,12 @@ MongoClient.connect((process.env.MONGOLAB_URL || 'mongodb://localhost:27017/urld
 		}
 
 		res.json(result);
+	});
+
+	app.get('/:url(*)', function(req, res) {
+		console.log("test");
+		var redirectUrl = req.params.url;
+		res.redirect(redirectUrl);
 	});
 
 	function validateURL(url) {
