@@ -45,9 +45,20 @@ MongoClient.connect((process.env.MONGOLAB_URL || 'mongodb://localhost:27017/urld
 	});
 
 	app.get('/:url(*)', function(req, res) {
-		console.log("test");
-		var redirectUrl = req.params.url;
-		res.redirect(redirectUrl);
+		var shortUrlValue = req.params.url;
+
+		urls.findOne({ "shortURL": shortUrlValue }, function(err, result) {
+			if(err) {
+				throw err;
+			}
+
+			if(result) {
+				res.redirect(result.originalURL);
+			}
+			else {
+				res.send("Error: This short URL does not exist!");
+			}
+		});
 	});
 
 	function validateURL(url) {
