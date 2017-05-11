@@ -16,6 +16,24 @@ MongoClient.connect((process.env.MONGOLAB_URL || 'mongodb://localhost:27017/urld
 
 	var urls = db.collection('urls');
 
+	app.get('/', function(req, res) {
+		res.send(
+			'<h1>URL Shortener Microservice API</h1>' +
+			'<br>' +
+			'<br>' +
+			'Valid URL format must start with "http://www" and end with ".com".' +
+			'<br>' +
+			'Example: ' +
+			'<br>' +
+			'<br>' +
+			'<code>http://www.example.com</code>' +
+			'<br>' +
+			'<br>' +
+			'<code>http://www.google.com</code>' +
+			'<br>'
+		);
+	});
+
 	app.get('/shorten/:url(*)', function(req, res) {
 		var reqUrl = req.params.url;
 		var isValidURL = validateURL(reqUrl);
