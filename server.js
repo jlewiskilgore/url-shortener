@@ -38,28 +38,37 @@ MongoClient.connect((process.env.MONGOLAB_URL || 'mongodb://localhost:27017/urld
 		var reqUrl = req.params.url;
 		var isValidURL = validateURL(reqUrl);
 		var shortUrl = Math.random().toString(36).slice(-5);
+		var result;
 
 		if(isValidURL) {
-			var result = {
-				"originalURL": reqUrl,
-				"shortURL": shortUrl
-			};
+			isLongUrlStored(reqUrl, function(err, storedResult) {
+				if(!storedResult) {
+					result = {
+						"originalURL": reqUrl,
+						"shortURL": shortUrl
+					};
 
-			urls.insert(result, function(err, res) {
-				if(err) {
-					throw err;
+					urls.insert(result, function(err, res) {
+						if(err) {
+							throw err;
+						}
+						console.log("Url inserted!");
+					});
 				}
-
-				console.log("Url inserted!");
+				else {
+					console.log("This Url is already stored");
+					result = storedResult;
+				}
+				res.json(result);
 			});
+
 		}
 		else {
-			var result = {
+			result = {
 				"error": "URL is not in valid format https://www.example.com"
 			};
+			res.json(result);
 		}
-
-		res.json(result);
 	});
 
 	app.get('/:url(*)', function(req, res) {
@@ -78,6 +87,23 @@ MongoClient.connect((process.env.MONGOLAB_URL || 'mongodb://localhost:27017/urld
 			}
 		});
 	});
+
+	var isLongUrlStored = function(url, callback) {
+		urls.findOne({ "originalURL": url }, function(err, result) {
+			if(err) {
+				callback(err);
+			}
+
+			if(result != null) {
+				console.log("Short URL exists");
+				callback(null, result);
+			}
+			else {
+				console.log("Short URL does not exist");
+				callback(null, false);
+			}
+		});
+	}
 
 	function validateURL(url) {
 		var urlArr = url.split(".");
