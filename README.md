@@ -14,3 +14,20 @@ will contain an error instead.
 
 3. If the user visites the shortened URL, it will redirect
 to the original link.
+
+-----
+
+##Example:
+
+To visit the app's instruction page:
+
+`https://gentle-tor-16236.herokuapp.com/`
+
+
+To get a new shortened URL:
+
+`https://gentle-tor-16236.herokuapp.com/shorten/[original URL]`
+
+This will return JSON in the form:
+
+`{"originalURL": reqUrl, "shortURL": shortUrl};`
