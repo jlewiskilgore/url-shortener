@@ -6,7 +6,7 @@ var dbURL = process.env.MONGOLAB_URL;
 
 app.set('port', (process.env.PORT || 8080));
 
-MongoClient.connect((process.env.MONGOLAB_URL || 'mongodb://localhost:27017/urldb'), function(err, db) {
+MongoClient.connect((process.env.MONGOLAB_URL || 'mongodb://<username>:<password>@ds041939.mlab.com:41939/heroku_k8kcdx04'), function(err, db) {
 	if(!err) {
 		console.log("We are connected");
 	}
@@ -21,6 +21,15 @@ MongoClient.connect((process.env.MONGOLAB_URL || 'mongodb://localhost:27017/urld
 			'<h1>URL Shortener Microservice API</h1>' +
 			'<br>' +
 			'<br>' +
+			'To shorten a URL use:' +
+			'<br>' +
+			'<br>' +
+			'https://gentle-tor-16236.herokuapp.com/shorten/[url to shorten]' +
+			'<br>' +
+			'<br>' +
+			'This will return a JSON response with the original URL and the shortened URL' +
+			'<br>' +
+			'<br>' +
 			'Valid URL format must start with "http://www" and end with ".com".' +
 			'<br>' +
 			'Example: ' +
@@ -29,8 +38,7 @@ MongoClient.connect((process.env.MONGOLAB_URL || 'mongodb://localhost:27017/urld
 			'<code>http://www.example.com</code>' +
 			'<br>' +
 			'<br>' +
-			'<code>http://www.google.com</code>' +
-			'<br>'
+			'<code>
 		);
 	});
 
