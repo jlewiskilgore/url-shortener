@@ -38,7 +38,7 @@ MongoClient.connect((process.env.MONGOLAB_URL || 'mongodb://<username>:<password
 			'<code>http://www.example.com</code>' +
 			'<br>' +
 			'<br>' +
-			'<code>
+			'<code>'
 		);
 	});
 
