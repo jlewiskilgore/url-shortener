@@ -24,7 +24,7 @@ MongoClient.connect((process.env.MONGOLAB_URL || 'mongodb://<username>:<password
 			'To shorten a URL use:' +
 			'<br>' +
 			'<br>' +
-			'https://gentle-tor-16236.herokuapp.com/shorten/[url to shorten]' +
+			'https://cryptic-thicket-68109.herokuapp.com/shorten/[url to shorten]' +
 			'<br>' +
 			'<br>' +
 			'This will return a JSON response with the original URL and the shortened URL' +
