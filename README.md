@@ -21,12 +21,12 @@ to the original link.
 
 To visit the app's instruction page:
 
-`https://gentle-tor-16236.herokuapp.com/`
+`https://cryptic-thicket-68109.herokuapp.com/`
 
 
 To get a new shortened URL:
 
-`https://gentle-tor-16236.herokuapp.com/shorten/[original URL]`
+`https://cryptic-thicket-68109.herokuapp.com/shorten/[original URL]`
 
 This will return JSON in the form:
 
